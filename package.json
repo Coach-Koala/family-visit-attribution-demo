@@ -1,0 +1,7 @@
+{
+  "name": "family-visit-attribution-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Public static demo for family visit speech attribution",
+  "license": "MIT"
+}

@@ -1,0 +1,1668 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Family Visit Attribution Demo</title>
+    <style>
+      :root {
+        --ink: #1f2933;
+        --muted: #5f6c76;
+        --teal: #1f7a7a;
+        --teal-deep: #165e5e;
+        --coral: #d45f42;
+        --cream: #f8f5ef;
+        --sand: #eee6d8;
+        --card: #ffffff;
+        --line: #d8d2c7;
+        --ok: #0f8f57;
+        --warn: #b26f1d;
+        --flag: #b03535;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        font-family: "Avenir Next", "Trebuchet MS", "Gill Sans", sans-serif;
+        background:
+          radial-gradient(circle at 6% 8%, #f4ebe0 0 10%, transparent 11%),
+          radial-gradient(circle at 95% 3%, #e7f1f1 0 13%, transparent 14%),
+          linear-gradient(160deg, #f7f4ed 0%, #fcfaf6 42%, #f0f5f5 100%);
+        min-height: 100vh;
+      }
+
+      .shell {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 28px 20px 56px;
+      }
+
+      .site-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .brand-lockup {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .brand-mark {
+        width: 12px;
+        height: 12px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--teal) 0%, var(--coral) 100%);
+        box-shadow: 0 0 0 6px rgba(31, 122, 122, 0.08);
+      }
+
+      .brand-copy {
+        font-size: 13px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--teal-deep);
+        font-weight: 700;
+      }
+
+      .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .nav-link,
+      .btn-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-decoration: none;
+      }
+
+      .nav-link {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.72);
+        color: var(--ink);
+        border-radius: 999px;
+        padding: 8px 12px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .nav-link.active {
+        background: var(--teal);
+        border-color: var(--teal);
+        color: #fff;
+      }
+
+      .hero {
+        background: linear-gradient(145deg, #fefdf9 0%, #f5efe4 52%, #e9f0f0 100%);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 24px;
+        box-shadow: 0 12px 32px rgba(31, 41, 51, 0.08);
+      }
+
+      .label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--teal-deep);
+        font-weight: 700;
+      }
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--coral);
+      }
+
+      h1 {
+        margin: 8px 0 10px;
+        font-size: clamp(28px, 4vw, 44px);
+        line-height: 1.08;
+      }
+
+      .sub {
+        margin: 0;
+        color: var(--muted);
+        max-width: 900px;
+        font-size: 16px;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .grid {
+        display: grid;
+        gap: 16px;
+        margin-top: 16px;
+      }
+
+      .grid.two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid.three {
+        grid-template-columns: 1.2fr 1fr 1fr;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 16px;
+      }
+
+      .card h2,
+      .card h3 {
+        margin-top: 0;
+        margin-bottom: 8px;
+      }
+
+      .small {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      audio {
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .pipeline {
+        display: grid;
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .step {
+        border: 1px solid #d7dde2;
+        border-radius: 10px;
+        padding: 10px;
+        background: #f8fbfb;
+        font-size: 14px;
+      }
+
+      .step strong {
+        color: var(--teal-deep);
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 10px 0 12px;
+      }
+
+      .pill {
+        border: 1px solid var(--line);
+        background: #fff;
+        color: var(--ink);
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-size: 12px;
+        cursor: pointer;
+      }
+
+      .pill.active {
+        background: var(--teal);
+        color: #fff;
+        border-color: var(--teal);
+      }
+
+      .btn {
+        border: 1px solid transparent;
+        border-radius: 10px;
+        padding: 10px 14px;
+        cursor: pointer;
+        font-weight: 700;
+        font: inherit;
+      }
+
+      .btn-primary {
+        background: var(--teal);
+        color: #fff;
+      }
+
+      .btn-secondary {
+        background: #fff;
+        color: var(--teal-deep);
+        border-color: var(--line);
+      }
+
+      textarea {
+        width: 100%;
+        min-height: 180px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 10px;
+        font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+        font-size: 12px;
+        line-height: 1.45;
+        resize: vertical;
+        background: #fefdfb;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+
+      thead th {
+        text-align: left;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+        border-bottom: 1px solid var(--line);
+        padding: 10px 8px;
+      }
+
+      tbody td {
+        border-top: 1px solid #ece7de;
+        padding: 10px 8px;
+        vertical-align: top;
+      }
+
+      .speaker,
+      .patient-tag,
+      .conf {
+        display: inline-block;
+        border-radius: 999px;
+        padding: 3px 8px;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .speaker.clinician {
+        background: #dff2ec;
+        color: #245948;
+      }
+
+      .speaker.patient {
+        background: #e9e5fb;
+        color: #4a3b8e;
+      }
+
+      .speaker.caregiver {
+        background: #fce8dd;
+        color: #82482f;
+      }
+
+      .patient-tag.person {
+        background: #dcecff;
+        color: #2a69a7;
+      }
+
+      .patient-tag.both {
+        background: #efe9de;
+        color: #6b5334;
+      }
+
+      .patient-tag.unassigned {
+        background: #f0f0f0;
+        color: #6d6d6d;
+      }
+
+      .conf.auto {
+        background: #def5e7;
+        color: var(--ok);
+      }
+
+      .conf.review {
+        background: #fff0d7;
+        color: var(--warn);
+      }
+
+      .conf.flagged {
+        background: #f8dddd;
+        color: var(--flag);
+      }
+
+      .summary {
+        border-radius: 14px;
+        padding: 14px;
+        border: 1px solid var(--line);
+      }
+
+      .summary {
+        background: linear-gradient(150deg, #fff8f4 0%, #ffece2 100%);
+      }
+
+      .kpis {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .kpi {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 10px;
+        background: #fff;
+      }
+
+      .kpi b {
+        display: block;
+        margin-top: 4px;
+        font-size: 20px;
+      }
+
+      .mono {
+        font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+      }
+
+      .status {
+        margin-top: 8px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .findings-editor {
+        width: 100%;
+        border: 1px solid var(--line);
+        background: #fffdf9;
+        color: var(--ink);
+        border-radius: 10px;
+        padding: 10px;
+        font-size: 13px;
+        line-height: 1.45;
+        min-height: 150px;
+        resize: vertical;
+      }
+
+      .findings-editor:focus {
+        outline: 2px solid #90d8d8;
+        outline-offset: 1px;
+      }
+
+      .fade-in {
+        animation: fadeIn 360ms ease both;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 1060px) {
+        .grid.three,
+        .grid.two,
+        .kpis {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .site-nav {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell fade-in">
+      <nav class="site-nav" aria-label="Primary">
+        <div class="brand-lockup">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-copy">Family Visit Attribution Demo</span>
+        </div>
+        <div class="nav-links">
+          <span class="nav-link active">Interactive Demo</span>
+        </div>
+      </nav>
+
+      <section class="hero">
+        <div class="label"><span class="dot"></span>FAMILY VISIT: Recording Attribution Demo</div>
+        <h1>Family Visit Speech Attribution</h1>
+        <p class="sub">
+          This version auto-generates a patient-attributed event stream and traditional patient clinical output
+          (including HPI, focused ROS, objective findings, assessment, and plan) from transcript text using
+          multi-signal attribution checks for each finding (explicit name, context continuity, and speaker cues).
+        </p>
+      </section>
+
+      <section class="grid two">
+        <article class="card fade-in" style="animation-delay: 70ms">
+          <h2>Input Audio</h2>
+          <p class="small">
+            Source audio provided: <span class="mono">family-visit-demo-audio.m4a</span>
+          </p>
+          <audio controls preload="metadata">
+            <source src="assets/family-visit-demo-audio.m4a" type="audio/mp4" />
+            Your browser does not support the bundled demo audio.
+          </audio>
+          <p class="small">
+            Bundled demo audio is loaded from this project so playback is consistent for the Aidan and Sebastián scenario.
+          </p>
+        </article>
+
+        <article class="card fade-in" style="animation-delay: 130ms">
+          <h2>Pipeline View</h2>
+          <div class="pipeline">
+            <div class="step"><strong>1. Ambient Capture</strong> chunk audio into 5-10 second windows</div>
+            <div class="step"><strong>2. ASR + Diarization</strong> transcript text plus speaker signals</div>
+            <div class="step"><strong>3. Patient Attribution</strong> explicit mention, speaker identity, context, switch detection</div>
+            <div class="step"><strong>4. Clinical Extraction</strong> symptoms, vitals, exam, and plan per patient</div>
+          </div>
+        </article>
+      </section>
+
+      <section class="card fade-in" style="margin-top: 16px; animation-delay: 180ms">
+        <h2>Transcript to Parse</h2>
+        <p class="small">Edit transcript text below, then click <strong>Generate Attribution</strong>.</p>
+        <textarea id="transcriptInput"></textarea>
+        <div class="toolbar" style="margin-top: 10px">
+          <button id="generateBtn" class="btn btn-primary">Generate Attribution</button>
+          <button id="resetBtn" class="btn btn-secondary">Reset to Bundled Transcript</button>
+        </div>
+        <div id="status" class="status"></div>
+      </section>
+
+      <section class="card fade-in" style="margin-top: 16px; animation-delay: 220ms">
+        <h2>Generated Event Stream</h2>
+        <p class="small">
+          Format: <span class="mono">timestamp | speaker | patient | text | confidence</span>
+        </p>
+        <p class="small">
+          Row-level editing is disabled for this simplified demo. Clinician edits happen in the patient clinical note section.
+        </p>
+
+        <div class="kpis" style="margin: 10px 0 4px">
+          <div class="kpi"><div class="small">Attributed Events</div><b id="eventCount">0</b></div>
+          <div class="kpi"><div class="small">Identified Patients</div><b id="patientCount">0</b></div>
+          <div class="kpi"><div class="small">Unassigned Events</div><b id="unassignedCount">0</b></div>
+          <div class="kpi"><div class="small">Multi-Patient Events</div><b id="bothCount">0</b></div>
+        </div>
+
+        <div class="toolbar" id="patientFilters"></div>
+
+        <div style="overflow-x: auto">
+          <table>
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Speaker</th>
+                <th>Patient</th>
+                <th>Transcript</th>
+                <th>Confidence</th>
+              </tr>
+            </thead>
+            <tbody id="eventTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="findingsCards" class="grid two" style="margin-top: 16px"></section>
+
+      <section class="card fade-in" style="margin-top: 16px; animation-delay: 360ms">
+        <h2>Clinician Actions</h2>
+        <p class="small">Update each patient clinical note as needed, then prepare a demo export payload.</p>
+        <div class="toolbar">
+          <button id="saveFindingsBtn" class="btn btn-secondary">Apply Edited Clinical Notes</button>
+          <button id="submitExportBtn" class="btn btn-primary">Prepare Demo Export</button>
+        </div>
+        <div id="exportStatus" class="status"></div>
+      </section>
+    </main>
+
+    <script>
+      const PROVIDED_TRANSCRIPT = `Oh, yeah. Look at this. Okay. What? Okay, I'm gonna sit... What's your name? Aidan. Aidan. And what's your name? Okay. Aidan, we're gonna... What do you want to talk about? You wanna talk about your arm? Tell me about what happened. No. No? Okay, I wanna talk about something else. All right. Good. Can we talk about stumped tummy, eh? You have a tummy ache? Oh, no. What kind of tummy you ate? It holds the night. It hurts when you do what? What? Let's just say when it hurts from the stretcher, okay? Okay. Yeah, speak. It's not real. Hi, Aidan. My name is Dr. B. So I heard you have a tummy ache. Tell me, when did it start? Yesterday? Yesterday? Did you eat anything funny? No. No. Have you been feeling hot? Do you feel like you have a fever? No. No. Can I check your temperature? Yes. All right, let me check. All right, 98.1 Fahrenheit, no fever today. All right, can we check? Let's see, let's check your heart rate. I'm gonna turn this on. Do I work tomorrow? Yeah. Yeah, but... beds. How are you feeling okay? Edward, you just throw up. Oh, my goodness. Perfect. Your oxygen, 98%, and your heart rate is 123. Now, let's see, you have a friend here, Sebastián. Who brings you in? to the clinic. You have a tummy ache too? Or did you get her? What happened to your stomach? You ate something bad? What did you eat for breakfast today? Spicy cheap now. Spicy Cheetos. I wonder, but that might be why. Did you go on vacation recently? No. No. No. You've been around here? How about you? Do you have a fever? Let's check. I'm gonna check your temperature, okay? Sebastián, I'm checking. And 97.6? Perfect. No fever for you. And let's check your heart rate. Put your little finger in there. All right, let's see. And so he needs a full shot, right? Or they both need blue shots. You know what? Both of you are due for your flu shot. All right, good 97? Percent, oxygen for Sebastián, and 100 is your pulse. So, yeah, so I recommend both of them getting their flu shot today. We're actually in? We're gonna get a flu shot. What? Yeah. And then, oh, look. Your little sister is here, too. Oh, sure. Oh, it's gonna be okay. I think I'm gonna go find the shark. I scared! You wanna come? You don't, you scared. You guys are brave. You'll do it. Mommy. Right. Okay, while we wait, I'm gonna listen to your heart and lungs, okay? While we wait. All right. Aidan, big, deep breath.'s fky. In and out. All right, good. Longs are clear. Part 8, normal. Let me hear your heart. and lungs. Sebastián. I'm taking my Big, deep breath, lungs are clear. Part rate, normal, no murmurs, perfect. Hey. Good. Let me hear your tummy, too. Oh, normal, active bowel sounds? For Aidan. How about you, Sebastián? Normal active valve. Good job, guys. You guys are doing very good. Thank. You did, really. Really good. High fives. So good.`;
+
+      const transcriptInput = document.getElementById("transcriptInput");
+      const eventTable = document.getElementById("eventTable");
+      const statusEl = document.getElementById("status");
+      const filters = document.getElementById("patientFilters");
+      const findingsCards = document.getElementById("findingsCards");
+      const exportStatusEl = document.getElementById("exportStatus");
+      const PRIMARY_PATIENT_KEYS = {
+        one: "Aidan".toLowerCase(),
+        two: "Sebastián".normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+      };
+      const DISPLAY_NAME_BY_KEY = new Map([
+        [PRIMARY_PATIENT_KEYS.one, "Aidan"],
+        [PRIMARY_PATIENT_KEYS.two, "Sebastián"]
+      ]);
+      const NAME_TOKEN = String.raw`\p{Lu}[\p{L}'-]{2,20}`;
+      const INTRO_NAME_RE = new RegExp(`^(${NAME_TOKEN})[.!?]?$`, "u");
+      const DIRECT_ADDRESS_RE = new RegExp(`\\b(?:Hi|Hey|Okay|Ok|All right|Alright|Now)\\s+(${NAME_TOKEN})\\b`, "gu");
+      const TURN_SIGNAL_RE = new RegExp(`\\b(${NAME_TOKEN})\\s+(?:goes first|first|your turn)\\b`, "gu");
+      const COMMA_NAME_RE = new RegExp(`\\b(${NAME_TOKEN}),`, "gu");
+      const THATS_NAME_RE = new RegExp(`\\b(?:That(?:'|’)s|That is)\\s+(${NAME_TOKEN})\\b`, "gu");
+      const CONTEXTUAL_NAME_RE = new RegExp(`\\b(?:friend here|about you|for|checking)\\s*,?\\s*(${NAME_TOKEN})(?=[?.!,]|$)`, "gu");
+      const AFTER_COMMA_NAME_RE = new RegExp(`,\\s*(${NAME_TOKEN})(?=[?.!]|$)`, "gu");
+      const FALLBACK_NAME_RE = new RegExp(`\\b${NAME_TOKEN}\\b`, "gu");
+      const WORDISH_RE = /\p{L}[\p{L}'-]*/gu;
+
+      const NAME_STOP_WORDS = new Set([
+        "oh",
+        "okay",
+        "all",
+        "right",
+        "let",
+        "lets",
+        "last",
+        "nice",
+        "good",
+        "great",
+        "perfect",
+        "temperature",
+        "oxygen",
+        "heart",
+        "while",
+        "before",
+        "high",
+        "chart",
+        "clinic",
+        "visit",
+        "team",
+        "who",
+        "what",
+        "that",
+        "this",
+        "me",
+        "my",
+        "your",
+        "you",
+        "yes",
+        "no",
+        "ah",
+        "dr",
+        "there",
+        "just",
+        "today",
+        "helpful",
+        "go",
+        "yeah"
+      ]);
+
+      let events = [];
+      let findings = {};
+      let patientRoster = [];
+      let clinicianName = "Clinician";
+      let currentFilter = "all";
+      let generatedChunkCount = 0;
+
+      function cleanTranscript(raw) {
+        return raw
+          .replace(/\r/g, "")
+          .replace(/\*\*/g, "")
+          .replace(/^#{1,6}\s+/gm, "")
+          .trim();
+      }
+
+      function stripDiacritics(value) {
+        return String(value || "")
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "");
+      }
+
+      function normalizePatientName(text) {
+        return stripDiacritics(text)
+          .toLowerCase()
+          .replace(WORDISH_RE, (word) => canonicalName(word));
+      }
+
+      function canonicalName(name) {
+        const compact = stripDiacritics(name)
+          .toLowerCase()
+          .replace(/[^a-z]/g, "");
+        if (!compact) return "";
+        if (/^a[iy]d[ae]n$/.test(compact)) return PRIMARY_PATIENT_KEYS.one;
+        if (compact.startsWith("seb") && compact.includes("st") && compact.endsWith("n") && compact.length >= 8 && compact.length <= 10) {
+          return PRIMARY_PATIENT_KEYS.two;
+        }
+        return compact;
+      }
+
+      function displayNameFromKey(key) {
+        if (!key) return "";
+        if (DISPLAY_NAME_BY_KEY.has(key)) return DISPLAY_NAME_BY_KEY.get(key);
+        return key.charAt(0).toUpperCase() + key.slice(1);
+      }
+
+      function escapeHtml(value) {
+        return String(value)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+      }
+
+      function splitSentences(raw) {
+        const cleaned = cleanTranscript(raw);
+        const lines = cleaned
+          .split(/\n+/)
+          .map((line) => line.trim())
+          .filter(Boolean);
+
+        const chunks = [];
+        lines.forEach((line) => {
+          const parts = line
+            .replace(/\.\.\.+/g, ". ")
+            .split(/(?<=[.!?])\s+/)
+            .map((part) => part.trim())
+            .filter(Boolean);
+
+          if (parts.length) chunks.push(...parts);
+        });
+
+        return chunks;
+      }
+
+      function detectClinicianName(sentences) {
+        for (const sentence of sentences) {
+          const match = sentence.match(/\bdr\.?\s*([\p{Lu}][\p{L}]*)\b/ui);
+          if (match) {
+            return `Dr. ${displayNameFromKey(canonicalName(match[1]))}`;
+          }
+        }
+        return "Clinician";
+      }
+
+      function extractPatientRoster(sentences, clinician) {
+        const clinicianKey = canonicalName(clinician.replace(/^dr\.?\s*/i, ""));
+        const candidates = new Map();
+
+        function addCandidate(rawName, score, index, options = {}) {
+          const key = canonicalName(rawName);
+          if (!key || key.length < 3 || NAME_STOP_WORDS.has(key) || key === clinicianKey) return;
+
+          const existing = candidates.get(key) || {
+            id: key,
+            name: displayNameFromKey(key),
+            score: 0,
+            firstSeen: index,
+            primary: false,
+            sourceCounts: {
+              intro: 0,
+              direct: 0,
+              turn: 0,
+              comma: 0,
+              thatIs: 0,
+              context: 0,
+              afterComma: 0
+            }
+          };
+          existing.score += score;
+          if (options.primary) existing.primary = true;
+          if (options.source && existing.sourceCounts[options.source] !== undefined) {
+            existing.sourceCounts[options.source] += 1;
+          }
+          if (index < existing.firstSeen) existing.firstSeen = index;
+          candidates.set(key, existing);
+        }
+
+        sentences.forEach((sentence, index) => {
+          const clean = sentence.replace(/[“”"]/g, "").trim();
+
+          if (/what(?:'|’)s your name/i.test(clean)) {
+            const next = (sentences[index + 1] || "").trim();
+            const nextMatch = next.match(INTRO_NAME_RE);
+            if (nextMatch) addCandidate(nextMatch[1], 6, index + 1, { primary: true, source: "intro" });
+          }
+
+          let match;
+          DIRECT_ADDRESS_RE.lastIndex = 0;
+          while ((match = DIRECT_ADDRESS_RE.exec(clean))) addCandidate(match[1], 2, index, { source: "direct" });
+
+          TURN_SIGNAL_RE.lastIndex = 0;
+          while ((match = TURN_SIGNAL_RE.exec(clean))) addCandidate(match[1], 3, index, { source: "turn" });
+
+          COMMA_NAME_RE.lastIndex = 0;
+          while ((match = COMMA_NAME_RE.exec(clean))) addCandidate(match[1], 2, index, { source: "comma" });
+
+          THATS_NAME_RE.lastIndex = 0;
+          while ((match = THATS_NAME_RE.exec(clean))) addCandidate(match[1], 3, index, { source: "thatIs" });
+
+          CONTEXTUAL_NAME_RE.lastIndex = 0;
+          while ((match = CONTEXTUAL_NAME_RE.exec(clean))) addCandidate(match[1], 3, index, { source: "context" });
+
+          AFTER_COMMA_NAME_RE.lastIndex = 0;
+          while ((match = AFTER_COMMA_NAME_RE.exec(clean))) addCandidate(match[1], 2, index, { source: "afterComma" });
+        });
+
+        let roster = [...candidates.values()]
+          .filter((candidate) => {
+            if (candidate.score < 3) return false;
+            const sources = candidate.sourceCounts;
+            return (
+              candidate.primary ||
+              sources.intro > 0 ||
+              sources.direct > 0 ||
+              sources.turn > 0 ||
+              sources.thatIs > 0 ||
+              sources.context > 0 ||
+              sources.comma >= 2 ||
+              sources.afterComma >= 2
+            );
+          })
+          .sort((a, b) => a.firstSeen - b.firstSeen || b.score - a.score);
+
+        if (!roster.length) {
+          const fallbackCounts = new Map();
+          sentences.forEach((sentence) => {
+            const names = sentence.match(FALLBACK_NAME_RE) || [];
+            names.forEach((name) => {
+              const key = canonicalName(name);
+              if (!key || NAME_STOP_WORDS.has(key) || key === clinicianKey) return;
+              fallbackCounts.set(key, (fallbackCounts.get(key) || 0) + 1);
+            });
+          });
+
+          roster = [...fallbackCounts.entries()]
+            .filter(([, count]) => count >= 2)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 3)
+            .map(([key], index) => ({
+              id: key,
+              name: displayNameFromKey(key),
+              score: 0,
+              firstSeen: index
+            }));
+        }
+
+        return roster.map((patient) => ({
+          id: patient.id,
+          name: patient.name,
+          primary: patient.primary
+        }));
+      }
+
+      function sentenceMentionsPatient(sentence, patient) {
+        const s = normalizePatientName(sentence);
+        const namePattern = new RegExp(`\\b${patient.id}\\b`, "i");
+        return namePattern.test(s);
+      }
+
+      function getMentionedPatientIds(sentence, roster) {
+        return roster.filter((patient) => sentenceMentionsPatient(sentence, patient)).map((patient) => patient.id);
+      }
+
+      function containsBothCue(sentence) {
+        return /(you both|both of you|both of them|both need|all of you|you guys)/i.test(sentence);
+      }
+
+      function speakerRoleFromSentence(sentence, activePatient, parsedClinician) {
+        const s = sentence.toLowerCase();
+        if (/mom|mommy|mother|father|dad|caregiver|guardian/.test(s)) {
+          return { role: "caregiver", speaker: "Caregiver" };
+        }
+
+        if (
+          /dr\.|let'?s|i\s+am|i'?m|i\s+heard|can i check|i'?m going to|let me|i want to|i see|temperature|heart rate|pulse|oxygen|listen|open|chart|recommend|shot|booster|instructions/.test(
+            s
+          )
+        ) {
+          return { role: "clinician", speaker: parsedClinician };
+        }
+
+        const shortResponse = sentence.trim().split(/\s+/).length <= 6;
+        if (shortResponse && activePatient && !/\?$/.test(sentence.trim())) {
+          return { role: "patient", speaker: patientLabel(activePatient) };
+        }
+
+        if (activePatient) return { role: "patient", speaker: patientLabel(activePatient) };
+        return { role: "patient", speaker: "Patient" };
+      }
+
+      function detectPatient(sentence, activePatient, roster) {
+        const mentionedPatients = getMentionedPatientIds(sentence, roster);
+        const hasBoth = containsBothCue(sentence);
+
+        if ((hasBoth && roster.length > 1) || mentionedPatients.length > 1) {
+          return { patient: "both", confidence: 0.9, method: "multi" };
+        }
+
+        if (mentionedPatients.length === 1) {
+          return { patient: mentionedPatients[0], confidence: 0.96, method: "explicit" };
+        }
+
+        if (activePatient) {
+          return { patient: activePatient, confidence: 0.76, method: "context" };
+        }
+
+        if (roster.length === 1) {
+          return { patient: roster[0].id, confidence: 0.7, method: "default" };
+        }
+
+        return { patient: "unassigned", confidence: 0.52, method: "ambiguous" };
+      }
+
+      function formatTime(seconds) {
+        const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
+        const ss = String(seconds % 60).padStart(2, "0");
+        return `00:${mm}:${ss}`;
+      }
+
+      function confidenceLevel(score) {
+        if (score > 0.9) return "auto";
+        if (score >= 0.6) return "review";
+        return "flagged";
+      }
+
+      function pushUnique(list, value) {
+        if (!value) return;
+        if (!list.includes(value)) list.push(value);
+      }
+
+      function inferConcern(text) {
+        if (/ear hurts?|ear pain|earache/.test(text)) return "Primary concern: ear pain";
+        if (/throat hurts?|sore throat/.test(text)) return "Primary concern: sore throat";
+        if (/tummy ache|stomach ache|abdominal/.test(text)) return "Primary concern: abdominal pain";
+        if (/knee|scrape/.test(text)) return "Primary concern: knee injury";
+        if (/cough/.test(text)) return "Primary concern: cough";
+        if (/\b(a little fever|mild fever|low[- ]grade fever|running a fever)\b/.test(text)) {
+          return "Primary concern: fever";
+        }
+        return "";
+      }
+
+      function hasStrongPatientPhrase(sentence, patientId) {
+        const s = normalizePatientName(sentence);
+        return (
+          new RegExp(`\\b${patientId}'s\\b`).test(s) ||
+          new RegExp(`\\bfor\\s+${patientId}\\b`).test(s) ||
+          new RegExp(`\\babout\\s+${patientId}\\b`).test(s) ||
+          new RegExp(`\\b${patientId}\\s+(?:first|your turn|goes first)\\b`).test(s) ||
+          new RegExp(`\\b${patientId},\\b`).test(s)
+        );
+      }
+
+      function nearestExplicitMention(index, events, direction, maxDistance = 4) {
+        for (let distance = 1; distance <= maxDistance; distance += 1) {
+          const scanIndex = index + distance * direction;
+          if (scanIndex < 0 || scanIndex >= events.length) break;
+
+          const scanned = events[scanIndex];
+          if (scanned.mentionedPatientIds && scanned.mentionedPatientIds.length) {
+            return {
+              distance,
+              patientIds: scanned.mentionedPatientIds
+            };
+          }
+        }
+        return null;
+      }
+
+      function patientEvidenceForFact(fact, event, eventIndex, events, patient, roster) {
+        let score = 0;
+        const evidence = [];
+        const speakerKey = canonicalName(event.speaker);
+
+        if (fact.explicitTargets && fact.explicitTargets.includes(patient.id)) {
+          score += 10;
+          evidence.push("explicit-target");
+        }
+
+        if (event.mentionedPatientIds.includes(patient.id)) {
+          score += 5;
+          evidence.push("name-mentioned");
+        }
+
+        if (hasStrongPatientPhrase(event.text, patient.id)) {
+          score += 3;
+          evidence.push("strong-phrase");
+        }
+
+        if (event.patient === patient.id) {
+          score += 3;
+          evidence.push("event-attribution");
+        }
+
+        if (eventIndex > 0 && events[eventIndex - 1].patient === patient.id) {
+          score += 2;
+          evidence.push("prev-continuity");
+        }
+
+        if (eventIndex < events.length - 1 && events[eventIndex + 1].patient === patient.id) {
+          score += 1;
+          evidence.push("next-continuity");
+        }
+
+        const prevExplicit = nearestExplicitMention(eventIndex, events, -1, 5);
+        if (prevExplicit && prevExplicit.patientIds.includes(patient.id)) {
+          score += prevExplicit.distance === 1 ? 3 : 2;
+          evidence.push("prev-explicit-context");
+        }
+
+        const nextExplicit = nearestExplicitMention(eventIndex, events, 1, 3);
+        if (nextExplicit && nextExplicit.patientIds.includes(patient.id)) {
+          score += nextExplicit.distance === 1 ? 2 : 1;
+          evidence.push("next-explicit-context");
+        }
+
+        if (speakerKey === patient.id) {
+          score += 2;
+          evidence.push("speaker-match");
+        }
+
+        if (roster.length === 1) {
+          score += 2;
+          evidence.push("single-patient-visit");
+        }
+
+        if (event.mentionedPatientIds.length > 0 && !event.mentionedPatientIds.includes(patient.id)) {
+          score -= 4;
+        }
+
+        if (event.patient === "both" && event.bothCue && fact.allowMulti) {
+          score += 1;
+          evidence.push("group-cue");
+        }
+
+        return {
+          patientId: patient.id,
+          score,
+          evidence,
+          evidenceCount: evidence.length
+        };
+      }
+
+      function resolveFactTargets(fact, event, eventIndex, events, roster) {
+        function confirmedAssignments(ids) {
+          return ids.map((id) => ({ patientId: id, tier: "confirmed" }));
+        }
+
+        if (!roster.length) return [];
+
+        if (fact.explicitTargets && fact.explicitTargets.length) {
+          const explicit = fact.explicitTargets.filter((id) => roster.some((patient) => patient.id === id));
+          return confirmedAssignments(explicit);
+        }
+
+        if (event.mentionedPatientIds.length > 1 && fact.allowMulti) {
+          return confirmedAssignments(event.mentionedPatientIds);
+        }
+
+        if (event.patient === "both" && fact.allowMulti) {
+          const mentioned = event.mentionedPatientIds;
+          if (mentioned.length >= 2) return confirmedAssignments(mentioned);
+
+          const primaryTargets = roster.filter((patient) => patient.primary).map((patient) => patient.id);
+          if (primaryTargets.length >= 2) return confirmedAssignments(primaryTargets);
+        }
+
+        const scored = roster.map((patient) => patientEvidenceForFact(fact, event, eventIndex, events, patient, roster));
+        scored.sort((a, b) => b.score - a.score || b.evidenceCount - a.evidenceCount);
+
+        const top = scored[0];
+        const second = scored[1];
+        if (!top) return [];
+
+        const scoreGap = second ? top.score - second.score : top.score;
+        const strict = fact.strict !== false;
+
+        if (strict) {
+          if (top.score >= 6 && top.evidenceCount >= 2) return [{ patientId: top.patientId, tier: "confirmed" }];
+          if (top.score >= 5 && top.evidenceCount >= 3) return [{ patientId: top.patientId, tier: "confirmed" }];
+          if (top.score >= 4 && top.evidenceCount >= 2 && scoreGap >= 2) return [{ patientId: top.patientId, tier: "confirmed" }];
+          if (top.score >= 3 && top.evidenceCount >= 1 && scoreGap >= 1) return [{ patientId: top.patientId, tier: "likely" }];
+          return [];
+        }
+
+        if (top.score >= 4 && top.evidenceCount >= 1) return [{ patientId: top.patientId, tier: "confirmed" }];
+        if (top.score >= 3 && top.evidenceCount >= 1) return [{ patientId: top.patientId, tier: "likely" }];
+        return [];
+      }
+
+      function extractClinicalFacts(event, roster) {
+        const facts = [];
+        const rawText = event.text.toLowerCase();
+        const text = normalizePatientName(event.text);
+        const isQuestion = /\?$/.test(event.text.trim());
+        const clinicianQuestion = isQuestion && event.speakerRole === "clinician";
+        const patientStatement = event.speakerRole === "patient";
+
+        const concern = inferConcern(text);
+        if (concern && (!clinicianQuestion || patientStatement)) {
+          facts.push({ type: "concern", label: concern, strict: false, allowMulti: false });
+        }
+
+        const tempWithUnitMatch = text.match(/(\d{2,3}(?:\.\d+)?)\s*(?:f|fahrenheit)\b/);
+        const tempAfterWordMatch = text.match(/temperature[^\d]{0,16}(\d{2,3}(?:\.\d+)?)/);
+        let tempReading = null;
+        if (tempWithUnitMatch) {
+          tempReading = tempWithUnitMatch[1];
+        } else if (tempAfterWordMatch) {
+          tempReading = tempAfterWordMatch[1];
+        }
+
+        const tempValue = tempReading ? Number.parseFloat(tempReading) : Number.NaN;
+        if (tempReading && /temperature|fever/.test(text)) {
+          facts.push({ type: "vital", label: `Temp: ${tempReading} F`, strict: true, allowMulti: false });
+        }
+
+        const oxyAfterWordMatch = text.match(/oxygen[^\d]{0,25}(\d{2,3})\s*(?:%|percent)?/);
+        const oxyBeforeWordMatch = text.match(/(\d{2,3})\s*(?:%|percent)?[^\d]{0,18}oxygen/);
+        const oxygenReading = oxyAfterWordMatch ? oxyAfterWordMatch[1] : oxyBeforeWordMatch ? oxyBeforeWordMatch[1] : null;
+        if (oxygenReading) {
+          facts.push({ type: "vital", label: `Oxygen: ${oxygenReading}%`, strict: true, allowMulti: false });
+        }
+
+        const hrAfterWordMatch = text.match(/(?:heart rate|pulse)[^\d]{0,25}(\d{2,3})/);
+        const hrBeforeWordMatch = text.match(/(\d{2,3})[^\d]{0,25}(?:pulse|heart rate)/);
+        const hrReading = hrAfterWordMatch ? hrAfterWordMatch[1] : hrBeforeWordMatch ? hrBeforeWordMatch[1] : null;
+        if (hrReading) {
+          facts.push({ type: "vital", label: `Pulse/HR: ${hrReading}`, strict: true, allowMulti: false });
+        }
+
+        const feverQuestionOnly = /\bfever\b[^.?!]*\?/i.test(rawText);
+        const feverNegative = /\b(no fever|without fever|afebrile|denies fever)\b/.test(text);
+        const feverPositivePhrase = /\b(a little fever|mild fever|low[- ]grade fever|running a fever|fever today)\b/.test(text);
+        const feverByTemperature = Number.isFinite(tempValue) && tempValue >= 100.0;
+
+        if (feverNegative) {
+          facts.push({ type: "fever", label: "No fever during visit", strict: true, allowMulti: false });
+        } else if (!feverQuestionOnly && (feverPositivePhrase || feverByTemperature)) {
+          facts.push({ type: "fever", label: "Fever noted during visit", strict: true, allowMulti: false });
+        }
+
+        if (/ear canal.*red/.test(text)) {
+          facts.push({ type: "exam", label: "Exam: ear canal mildly erythematous", strict: true, allowMulti: false });
+        }
+
+        if (/eardrum.*ok|eardrum.*good|eardrum.*normal/.test(text)) {
+          facts.push({ type: "exam", label: "Exam: eardrum appears normal", strict: true, allowMulti: false });
+        }
+
+        if (/tonsils?.*red/.test(text)) {
+          facts.push({ type: "exam", label: "Exam: tonsils mildly red", strict: true, allowMulti: false });
+        }
+
+        if (/no white spots/.test(text)) {
+          facts.push({ type: "exam", label: "Exam: no tonsillar exudates", strict: true, allowMulti: false });
+        }
+
+        if (/lungs?\s+(?:are|sound)\s+clear/.test(text)) {
+          facts.push({ type: "exam", label: "Exam: lungs clear", strict: true, allowMulti: false });
+        }
+
+        if (/heart sounds normal|heart rate normal|no murmurs?/.test(text)) {
+          facts.push({ type: "exam", label: "Exam: heart sounds normal, no murmurs", strict: true, allowMulti: false });
+        }
+
+        if (/small scrape|bumped .*knee|knee/.test(text) && !clinicianQuestion) {
+          facts.push({ type: "injury", label: "Injury: minor knee scrape", strict: true, allowMulti: false });
+        }
+
+        if (/cough/.test(text) && (!clinicianQuestion || patientStatement)) {
+          facts.push({ type: "symptom", label: "Symptom: cough", strict: true, allowMulti: false });
+        }
+
+        if (/swimming/.test(text) && (!clinicianQuestion || patientStatement)) {
+          facts.push({ type: "history", label: "History: recent swimming exposure", strict: true, allowMulti: false });
+        }
+
+        if (/virus/.test(text) && !clinicianQuestion) {
+          facts.push({ type: "assessment", label: "Assessment: likely viral process", strict: true, allowMulti: false });
+        }
+
+        const dueStatement = !isQuestion && (/\bis due\b|\bare due\b|\bdue today\b|\bdue for\b/.test(text) || /is due|are due/.test(text));
+        const upToDateStatement = !isQuestion && /\bup to date\b/.test(text);
+
+        if (/tetanus booster/.test(text) && dueStatement) {
+          facts.push({ type: "plan", label: "Plan: tetanus booster due", strict: true, allowMulti: true });
+        }
+
+        if (/tetanus booster/.test(text) && upToDateStatement) {
+          facts.push({ type: "plan", label: "Immunization: tetanus booster up to date", strict: true, allowMulti: true });
+        }
+
+        if (/flu shot/.test(text) && dueStatement) {
+          facts.push({ type: "plan", label: "Plan: flu shot due", strict: true, allowMulti: true });
+        }
+
+        if (!isQuestion && /up to date|due/.test(text)) {
+          roster.forEach((patient) => {
+            if (new RegExp(`${patient.id}[^.]*up to date`).test(text)) {
+              facts.push({
+                type: "plan",
+                label: "Immunization: tetanus booster up to date",
+                strict: true,
+                allowMulti: false,
+                explicitTargets: [patient.id]
+              });
+            }
+
+            if (new RegExp(`${patient.id}[^.]*due`).test(text)) {
+              facts.push({
+                type: "plan",
+                label: "Plan: tetanus booster due",
+                strict: true,
+                allowMulti: false,
+                explicitTargets: [patient.id]
+              });
+            }
+          });
+        }
+
+        return facts;
+      }
+
+      function applyFactToFindings(fact, assignments, findingsStore) {
+        assignments.forEach((assignment) => {
+          const targetId = assignment.patientId;
+          const tier = assignment.tier || "confirmed";
+          if (!findingsStore[targetId]) return;
+
+          if (fact.type === "concern") {
+            if (tier === "confirmed") {
+              if (!findingsStore[targetId].concern || /not identified/.test(findingsStore[targetId].concern)) {
+                findingsStore[targetId].concern = fact.label;
+              }
+            } else {
+              const possibleConcern = fact.label.replace(/^Primary concern:/, "Possible concern:");
+              if (!findingsStore[targetId].items.includes(possibleConcern)) {
+                pushUnique(findingsStore[targetId].likelyItems, possibleConcern);
+              }
+            }
+            return;
+          }
+
+          if (tier === "confirmed") {
+            pushUnique(findingsStore[targetId].items, fact.label);
+            findingsStore[targetId].likelyItems = findingsStore[targetId].likelyItems.filter((item) => item !== fact.label);
+            return;
+          }
+
+          if (!findingsStore[targetId].items.includes(fact.label)) {
+            pushUnique(findingsStore[targetId].likelyItems, fact.label);
+          }
+        });
+      }
+
+      function extractFindings(event, eventIndex, events, findingsStore, roster) {
+        const facts = extractClinicalFacts(event, roster);
+        if (!facts.length) return;
+
+        facts.forEach((fact) => {
+          const targets = resolveFactTargets(fact, event, eventIndex, events, roster);
+          if (!targets.length) return;
+          applyFactToFindings(fact, targets, findingsStore);
+        });
+      }
+
+      function parseTranscript(rawTranscript) {
+        const sentences = splitSentences(rawTranscript);
+        const parsedClinician = detectClinicianName(sentences);
+        const parsedRoster = extractPatientRoster(sentences, parsedClinician);
+        const parsedEvents = [];
+        const parsedFindings = {};
+
+        parsedRoster.forEach((patient) => {
+          parsedFindings[patient.id] = {
+            name: patient.name,
+            concern: "Primary concern: not identified from transcript",
+            items: [],
+            likelyItems: [],
+            clinicalNote: ""
+          };
+        });
+
+        let activePatient = parsedRoster.length === 1 ? parsedRoster[0].id : null;
+        let secondCounter = 12;
+
+        patientRoster = parsedRoster;
+
+        sentences.forEach((sentence) => {
+          const mentionedPatientIds = getMentionedPatientIds(sentence, parsedRoster);
+          const bothCue = containsBothCue(sentence);
+          const patientResult = detectPatient(sentence, activePatient, parsedRoster);
+          if (patientResult.patient !== "both" && patientResult.patient !== "unassigned") {
+            activePatient = patientResult.patient;
+          }
+
+          const speaker = speakerRoleFromSentence(sentence, activePatient, parsedClinician);
+          const event = {
+            t: formatTime(secondCounter),
+            speakerRole: speaker.role,
+            speaker: speaker.speaker,
+            patient: patientResult.patient,
+            text: sentence,
+            confidence: patientResult.confidence.toFixed(2),
+            level: confidenceLevel(patientResult.confidence),
+            mentionedPatientIds,
+            bothCue
+          };
+
+          secondCounter += 14;
+          parsedEvents.push(event);
+        });
+
+        parsedEvents.forEach((event, eventIndex) => {
+          extractFindings(event, eventIndex, parsedEvents, parsedFindings, parsedRoster);
+        });
+
+        parsedRoster.forEach((patient) => {
+          if (!parsedFindings[patient.id].items.length && !parsedFindings[patient.id].likelyItems.length) {
+            parsedFindings[patient.id].items.push("No structured findings detected from transcript.");
+          }
+        });
+
+        return {
+          parsedEvents,
+          parsedFindings,
+          sentenceCount: sentences.length,
+          parsedRoster,
+          parsedClinician
+        };
+      }
+
+      function stripFactPrefix(line) {
+        return (line || "").replace(/^[A-Za-z/ ]+:\s*/i, "").trim();
+      }
+
+      function firstCapturedValue(lines, pattern) {
+        for (const line of lines) {
+          const match = String(line || "").match(pattern);
+          if (match) return match[1];
+        }
+        return "";
+      }
+
+      function sentenceCase(value) {
+        const clean = String(value || "").trim();
+        if (!clean) return "";
+        return clean.charAt(0).toUpperCase() + clean.slice(1);
+      }
+
+      function collectPatientEvents(patientId) {
+        return events.filter(
+          (event) =>
+            event.patient === patientId ||
+            (event.patient === "both" && (event.mentionedPatientIds.includes(patientId) || event.bothCue))
+        );
+      }
+
+      function detectOnsetFromEvents(patientId) {
+        const patientEvents = collectPatientEvents(patientId);
+        for (const event of patientEvents) {
+          const normalized = normalizePatientName(event.text.toLowerCase());
+          const match = normalized.match(
+            /\b(last night|yesterday|this morning|today|overnight|for \d+\s*(?:hour|hours|day|days)|since [^,.!?;]+)/i
+          );
+          if (match) return match[1];
+        }
+        return "";
+      }
+
+      function inferAssessmentStatement(chiefComplaint, examLines, hasFeverPositive) {
+        const concern = chiefComplaint.toLowerCase();
+        const examText = examLines.join(" ").toLowerCase();
+
+        if (/\bear\b/.test(concern) || /otalgia/.test(concern)) {
+          if (/ear canal/.test(examText)) return "Acute otalgia, possible mild otitis externa";
+          return "Acute otalgia without severe exam features";
+        }
+
+        if (/\bthroat\b|pharyng/.test(concern)) {
+          if (/tonsils/.test(examText) && /no tonsillar exudates/.test(examText)) return "Acute pharyngitis, likely viral etiology";
+          return "Sore throat, likely uncomplicated upper respiratory infection";
+        }
+
+        if (/\babdominal\b|tummy|stomach/.test(concern)) {
+          return "Abdominal pain without acute abdominal exam findings";
+        }
+
+        if (/\bknee\b|scrape|injury/.test(concern)) {
+          return "Minor superficial knee abrasion";
+        }
+
+        if (hasFeverPositive) return "Febrile illness, likely viral process";
+        return "Pediatric complaint under evaluation";
+      }
+
+      function buildTraditionalClinicalNote(patient, patientFindings, patientIndex) {
+        const defaults = [
+          { age: 7, duration: "about 24 hours", severity: "4/10", temp: "98.6 F", oxygen: "99%", pulse: "104" },
+          { age: 9, duration: "about 36 hours", severity: "5/10", temp: "99.0 F", oxygen: "98%", pulse: "102" },
+          { age: 4, duration: "about 12 hours", severity: "3/10", temp: "98.7 F", oxygen: "99%", pulse: "108" }
+        ];
+        const demo = defaults[patientIndex % defaults.length];
+
+        const confirmedItems = patientFindings.items || [];
+        const likelyItems = patientFindings.likelyItems || [];
+        const allItems = [...confirmedItems, ...likelyItems];
+
+        const historyLines = allItems.filter((line) => /^History:/i.test(line)).map(stripFactPrefix);
+        const symptomLines = allItems.filter((line) => /^(Symptom|Injury):/i.test(line)).map(stripFactPrefix);
+        const examLines = confirmedItems.filter((line) => /^Exam:/i.test(line)).map(stripFactPrefix);
+        const planLines = confirmedItems.filter((line) => /^(Plan|Immunization):/i.test(line)).map(stripFactPrefix);
+
+        const tempValue = firstCapturedValue(allItems, /Temp:\s*([0-9.]+\s*F)/i) || demo.temp;
+        const oxygenRaw = firstCapturedValue(allItems, /Oxygen:\s*([0-9]{2,3}%?)/i) || demo.oxygen;
+        const pulseValue = firstCapturedValue(allItems, /Pulse\/HR:\s*([0-9]{2,3})/i) || demo.pulse;
+        const oxygenValue = /%$/.test(oxygenRaw) ? oxygenRaw : `${oxygenRaw}%`;
+
+        const concernRaw = (patientFindings.concern || "").replace(/^Primary concern:\s*/i, "").trim();
+        const chiefComplaint =
+          concernRaw && !/not identified/i.test(concernRaw) ? concernRaw : symptomLines[0] || "general pediatric concern";
+        const chiefComplaintLine = sentenceCase(chiefComplaint);
+
+        const onset = detectOnsetFromEvents(patient.id) || `not clearly documented (demo estimate: ${demo.duration})`;
+        const contextLine = historyLines.length
+          ? historyLines.join("; ")
+          : "No clear trigger documented (demo fill-in: no recent travel or known sick contacts).";
+
+        const associated = [];
+        const feverPositive = allItems.some((line) => /Fever noted during visit/i.test(line));
+        const feverNegative = allItems.some((line) => /No fever during visit/i.test(line));
+        if (feverPositive) associated.push("fever");
+        if (feverNegative) associated.push("no current fever");
+        const complaintNeedle = chiefComplaint.toLowerCase();
+        symptomLines.forEach((symptom) => {
+          if (!complaintNeedle || !symptom.toLowerCase().includes(complaintNeedle)) associated.push(symptom.toLowerCase());
+        });
+        const associatedLine = associated.length
+          ? [...new Set(associated)].join(", ")
+          : "No additional associated symptoms clearly documented (demo fill-in: mild fatigue only).";
+
+        const patientText = collectPatientEvents(patient.id)
+          .map((event) => event.text.toLowerCase())
+          .join(" ");
+        const respiratoryPositive = /\bcough\b/.test(patientText) || allItems.some((line) => /Symptom:\s*cough/i.test(line));
+        const giPositive = /\babdominal|tummy|stomach|vomit/.test(patientText) || /\babdominal|tummy|stomach/.test(chiefComplaint);
+
+        const rosConstitutional = feverPositive
+          ? "Low-grade fever reported."
+          : feverNegative
+            ? "No fever reported."
+            : "No fever clearly documented (demo fill-in: no chills/night sweats).";
+        const rosHeent =
+          /\bear\b/.test(chiefComplaint.toLowerCase()) || /ear/.test(patientText)
+            ? "Ear discomfort present; no hearing loss reported."
+            : /\bthroat\b/.test(chiefComplaint.toLowerCase()) || /throat/.test(patientText)
+              ? "Sore throat present; no drooling or voice change reported."
+              : "No focal HEENT red flags documented.";
+        const rosResp = respiratoryPositive
+          ? "Intermittent cough reported; no shortness of breath."
+          : "No cough or dyspnea reported (demo fill-in).";
+        const rosGi = giPositive ? "GI discomfort present per HPI." : "No vomiting or diarrhea reported (demo fill-in).";
+
+        const examSummary = examLines.length
+          ? examLines.join("; ")
+          : "No detailed exam findings captured (demo fill-in: non-toxic appearance and no acute distress).";
+
+        const assessment = inferAssessmentStatement(chiefComplaintLine, examLines, feverPositive);
+        const stableAssessment =
+          feverPositive || Number.parseFloat(tempValue) >= 100
+            ? "Mildly symptomatic but hemodynamically stable for outpatient management"
+            : "Clinically stable with reassuring vitals and exam";
+
+        const planBullets = planLines.length
+          ? planLines
+          : [
+              "Supportive care: hydration, rest, symptom monitoring at home",
+              "Return precautions reviewed with caregiver",
+              "Follow-up with pediatrician in 48-72 hours if not improving"
+            ];
+
+        const likelyReview = likelyItems.length
+          ? likelyItems.map(stripFactPrefix)
+          : ["No lower-confidence findings currently flagged."];
+
+        return [
+          `Patient: ${patient.name} (${demo.age}-year-old child, demo placeholder age)`,
+          "Note Type: Family Visit Clinical Output (Demo)",
+          "Note: Synthetic placeholders are included where transcript detail was missing.",
+          "",
+          `Chief Complaint: ${chiefComplaintLine}`,
+          "",
+          "History of Present Illness (HPI):",
+          `- ${patient.name} was seen during a family visit for ${chiefComplaintLine.toLowerCase()}.`,
+          `- Onset/timing: ${onset}.`,
+          `- Context/triggers: ${contextLine}.`,
+          `- Associated symptoms: ${associatedLine}.`,
+          `- Functional impact (demo fill-in): discomfort approximately ${demo.severity}, tolerating oral intake.`,
+          "",
+          "Review of Systems (Focused):",
+          `- Constitutional: ${rosConstitutional}`,
+          `- HEENT: ${rosHeent}`,
+          `- Respiratory: ${rosResp}`,
+          `- GI: ${rosGi}`,
+          "",
+          "Objective:",
+          `- Vitals: Temp ${tempValue}, SpO2 ${oxygenValue}, Pulse ${pulseValue}.`,
+          `- Exam: ${examSummary}.`,
+          "",
+          "Assessment:",
+          `1. ${assessment}.`,
+          `2. ${stableAssessment}.`,
+          "",
+          "Plan:",
+          ...planBullets.map((line) => `- ${String(line).replace(/[.]+$/g, "")}.`),
+          "",
+          "Needs Clinician Review (Lower Confidence):",
+          ...likelyReview.map((line) => `- ${String(line).replace(/[.]+$/g, "")}.`)
+        ].join("\n");
+      }
+
+      function patientLabel(patientKey) {
+        if (patientKey === "both") {
+          if (patientRoster.length === 2) {
+            return `${patientRoster[0].name} + ${patientRoster[1].name}`;
+          }
+          return "Multiple Patients";
+        }
+        if (patientKey === "unassigned") return "Unassigned";
+        const match = patientRoster.find((patient) => patient.id === patientKey);
+        return match ? match.name : displayNameFromKey(patientKey);
+      }
+
+      function patientBadgeClass(patientKey) {
+        if (patientKey === "both") return "both";
+        if (patientKey === "unassigned") return "unassigned";
+        return "person";
+      }
+
+      function renderFilters() {
+        const filterOptions = [{ key: "all", label: "All" }, ...patientRoster.map((patient) => ({ key: patient.id, label: patient.name }))];
+
+        if (events.some((event) => event.patient === "both")) {
+          filterOptions.push({ key: "both", label: "Multi" });
+        }
+
+        if (events.some((event) => event.patient === "unassigned")) {
+          filterOptions.push({ key: "unassigned", label: "Unassigned" });
+        }
+
+        if (!filterOptions.some((option) => option.key === currentFilter)) {
+          currentFilter = "all";
+        }
+
+        filters.innerHTML = filterOptions
+          .map((option) => {
+            const activeClass = option.key === currentFilter ? "active" : "";
+            return `<button class="pill ${activeClass}" data-filter="${option.key}">${escapeHtml(option.label)}</button>`;
+          })
+          .join("");
+      }
+
+      function renderRows(filter = "all") {
+        const rows = events
+          .filter((event) => {
+            if (filter === "all") return true;
+            if (filter === "both" || filter === "unassigned") return event.patient === filter;
+            return event.patient === filter || event.patient === "both";
+          })
+          .map((event) => {
+            return `
+              <tr>
+                <td class="mono">${event.t}</td>
+                <td><span class="speaker ${event.speakerRole}">${escapeHtml(event.speaker)}</span></td>
+                <td><span class="patient-tag ${patientBadgeClass(event.patient)}">${escapeHtml(patientLabel(event.patient))}</span></td>
+                <td>${escapeHtml(event.text)}</td>
+                <td><span class="conf ${event.level}">${event.confidence}</span></td>
+              </tr>
+            `;
+          })
+          .join("");
+
+        eventTable.innerHTML = rows || `<tr><td colspan="5" class="small">No rows for this filter.</td></tr>`;
+      }
+
+      function renderSummary() {
+        if (!patientRoster.length) {
+          findingsCards.innerHTML = `
+            <article class="summary">
+              <h3>No Patient Roster Detected</h3>
+              <p class="small">Paste a transcript that includes patient names (for example: "What's your name?" + response).</p>
+            </article>
+          `;
+          return;
+        }
+
+        findingsCards.innerHTML = patientRoster
+          .map((patient, index) => {
+            const patientFindings = findings[patient.id] || {
+              concern: "Primary concern: not identified from transcript",
+              items: ["No structured findings detected from transcript."],
+              likelyItems: [],
+              clinicalNote: ""
+            };
+            if (!findings[patient.id]) findings[patient.id] = patientFindings;
+            if (!patientFindings.clinicalNote) {
+              patientFindings.clinicalNote = buildTraditionalClinicalNote(patient, patientFindings, index);
+            }
+            const delay = 280 + index * 40;
+
+            return `
+              <article class="summary fade-in" style="animation-delay: ${delay}ms">
+                <h3>${escapeHtml(patient.name)}: Traditional Clinical Output</h3>
+                <p class="small">Includes HPI and standard clinical note sections. Synthetic demo placeholders are clearly marked.</p>
+                <textarea class="findings-editor" style="min-height: 360px" placeholder="Clinical note appears here. Clinician can edit." data-clinical-note-patient="${patient.id}">${escapeHtml(
+              patientFindings.clinicalNote
+            )}</textarea>
+              </article>
+            `;
+          })
+          .join("");
+      }
+
+      function renderCounts() {
+        document.getElementById("eventCount").textContent = events.length;
+        document.getElementById("patientCount").textContent = patientRoster.length;
+        document.getElementById("unassignedCount").textContent = events.filter((event) => event.patient === "unassigned").length;
+        document.getElementById("bothCount").textContent = events.filter((event) => event.patient === "both").length;
+      }
+
+      function applyEditedFindings() {
+        patientRoster.forEach((patient, index) => {
+          const editor = findingsCards.querySelector(`[data-clinical-note-patient="${patient.id}"]`);
+          if (!editor) return;
+
+          if (!findings[patient.id]) {
+            findings[patient.id] = {
+              concern: "Primary concern: not identified from transcript",
+              items: [],
+              likelyItems: [],
+              clinicalNote: ""
+            };
+          }
+
+          const note = editor.value.trim();
+          findings[patient.id].clinicalNote = note || buildTraditionalClinicalNote(patient, findings[patient.id], index);
+        });
+
+        renderSummary();
+        statusEl.textContent = `Generated ${events.length} attributed events from ${generatedChunkCount} transcript chunks. Clinician clinical notes updated.`;
+      }
+
+      function prepareDemoExport() {
+        applyEditedFindings();
+
+        const now = new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit"
+        });
+
+        const payload = {
+          visit_id: "visit-demo-123",
+          clinician: clinicianName,
+          submitted_at: now,
+          patients: patientRoster.map((patient) => ({
+            id: patient.id,
+            name: patient.name,
+            concern: findings[patient.id]?.concern || "",
+            findings: findings[patient.id]?.items || [],
+            likely_findings: findings[patient.id]?.likelyItems || [],
+            clinical_note: findings[patient.id]?.clinicalNote || ""
+          }))
+        };
+
+        exportStatusEl.textContent = `Prepared demo export at ${now}. Payload size: ${JSON.stringify(payload).length} bytes.`;
+      }
+
+      function generateFromInput() {
+        const raw = transcriptInput.value.trim();
+        const { parsedEvents, parsedFindings, sentenceCount, parsedRoster, parsedClinician } = parseTranscript(raw);
+
+        events = parsedEvents;
+        findings = parsedFindings;
+        patientRoster = parsedRoster;
+        clinicianName = parsedClinician;
+        generatedChunkCount = sentenceCount;
+
+        renderFilters();
+        renderCounts();
+        renderRows(currentFilter);
+        renderSummary();
+        exportStatusEl.textContent = "";
+
+        const rosterLabel = patientRoster.length ? patientRoster.map((patient) => patient.name).join(", ") : "none";
+        statusEl.textContent = `Generated ${parsedEvents.length} attributed events from ${sentenceCount} transcript chunks. Detected patients: ${rosterLabel}.`;
+      }
+
+      filters.addEventListener("click", (event) => {
+        if (event.target.tagName !== "BUTTON") return;
+
+        [...filters.querySelectorAll(".pill")].forEach((pill) => pill.classList.remove("active"));
+        event.target.classList.add("active");
+
+        currentFilter = event.target.dataset.filter || "all";
+        renderRows(currentFilter);
+      });
+
+      document.getElementById("generateBtn").addEventListener("click", generateFromInput);
+      document.getElementById("saveFindingsBtn").addEventListener("click", applyEditedFindings);
+      document.getElementById("submitExportBtn").addEventListener("click", prepareDemoExport);
+      transcriptInput.addEventListener("paste", () => {
+        setTimeout(generateFromInput, 0);
+      });
+
+      document.getElementById("resetBtn").addEventListener("click", () => {
+        transcriptInput.value = PROVIDED_TRANSCRIPT;
+        exportStatusEl.textContent = "";
+        generateFromInput();
+      });
+
+      transcriptInput.value = PROVIDED_TRANSCRIPT;
+      generateFromInput();
+    </script>
+  </body>
+</html>
